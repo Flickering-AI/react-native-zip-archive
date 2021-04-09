@@ -44,6 +44,7 @@ public class RNZipArchiveModule extends ReactContextBaseJavaModule {
 
   private static final String PROGRESS_EVENT_NAME = "zipArchiveProgressEvent";
   private static final String EVENT_KEY_FILENAME = "filePath";
+  private static final String EVENT_KEY_ZIPNAME = "zipPath";
   private static final String EVENT_KEY_PROGRESS = "progress";
 
   public RNZipArchiveModule(ReactApplicationContext reactContext) {
@@ -288,7 +289,8 @@ public class RNZipArchiveModule extends ReactContextBaseJavaModule {
                   // update at most once per percent.
                   if (percentDone > lastTime) {
                     lastPercentage[0] = percentDone;
-                    updateProgress(extractedBytes[0], size, finalEntry.getName());
+                    // updateProgress(extractedBytes[0], size, finalEntry.getName());
+                    updateProgress(extractedBytes[0], size, assetsPath);
                   }
                 }
               };
@@ -466,6 +468,7 @@ public class RNZipArchiveModule extends ReactContextBaseJavaModule {
 
     WritableMap map = Arguments.createMap();
     map.putString(EVENT_KEY_FILENAME, zipFilePath);
+    map.putString(EVENT_KEY_ZIPNAME, zipFilePath);
     map.putDouble(EVENT_KEY_PROGRESS, progress);
     getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(PROGRESS_EVENT_NAME, map);

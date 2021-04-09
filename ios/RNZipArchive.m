@@ -204,8 +204,8 @@ RCT_EXPORT_METHOD(zipFilesWithPassword:(NSArray<NSString *> *)from
 }
 
 - (void)zipArchiveDidUnzipFileAtIndex:(NSInteger)fileIndex totalFiles:(NSInteger)totalFiles archivePath:(NSString *)archivePath unzippedFilePath:(NSString *)processedFilePath {
-    self.processedFilePath = processedFilePath;
-    [self dispatchProgessEvent:self.progress processedFilePath:self.processedFilePath];
+    self.processedFilePath = archivePath;//processedFilePath;
+    // [self dispatchProgessEvent:self.progress processedFilePath:self.processedFilePath];
 }
 
 - (void)setProgressHandler {
@@ -217,7 +217,7 @@ RCT_EXPORT_METHOD(zipFilesWithPassword:(NSArray<NSString *> *)from
 
 - (void)dispatchProgessEvent:(float)progress processedFilePath:(NSString *)processedFilePath {
     if (hasListeners) {
-        [self sendEventWithName:@"zipArchiveProgressEvent" body:@{@"progress": @(progress), @"filePath": processedFilePath}];
+        [self sendEventWithName:@"zipArchiveProgressEvent" body:@{@"progress": @(progress), @"zipPath": processedFilePath, @"filePath": processedFilePath}];
     }
 }
 
